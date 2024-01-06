@@ -18,7 +18,27 @@ const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
 
-// variable locations, set to an array[], that store objects{}
+// variable weapons, assigned to an array[], that store objects{}
+const weapons =[
+    {
+        name: "stick",
+        power: 5
+    },  
+    {
+        name: "dagger",
+        power: 30
+    },
+    {
+        name: "claw hammer",
+        power: 50
+    },
+    {
+        name: "sword",
+        power: 100
+    }
+];
+
+// variable locations, assigned to an array[], that store objects{}
 const locations = [
     {
         name: "town square",
@@ -89,20 +109,43 @@ function fightDragon(){
 
 function buyHealth() {
     if(gold >= 10){
-        gold: gold -= 10;
-        health: health += 10;
+        gold -= 10;
+        health += 10;
     
         goldText.innerText = gold;
         healthText.innerText = health;
 
+    }  else {
+        text.innerText = "You do not have enough gold to buy health.";
     }
-    else{
-        text.innerText = "You do not have enough gold to buy health."
-    }
+    
 }
 
 function buyWeapon() {
+    if(currentWeapon < weapons.length - 1){
 
+        if(gold >= 30){
+            gold -= 30;
+            currentWeapon++;
+    
+            goldText.innerHTML = gold;
+            let newWeapon = weapons[currentWeapon].name;
+            newWeapon.name
+    
+            text.innerText = "You now have a " +  newWeapon + ".";
+            
+            inventory.push(newWeapon);
+            text.innerText += " In your inventory you have: " + inventory;
+
+        } else {
+            text.innerText = "You do not have enough gold to buy a weapon.";
+        }
+
+    } else{
+        text.innerText = "You already have the most powerful weapon!"; 
+        button2.innerText = "Sell weapon for 15 gold.";
+        button2.onclick = sellWeapon;
+    }
 }
 
 function fightSlime() {
