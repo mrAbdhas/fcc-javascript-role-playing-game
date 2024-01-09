@@ -211,9 +211,20 @@ function goFight(){
 function attack(){
     text.innerText = "The " + monsters[fighting].name + " attacks.";
     text.innerText += " You attack it with your " + weapons[currentWeapon].name + ".";
-    health -= monsters[fighting].level;
-    monsterHealth -= weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1;
+    /* health -= monsters[fighting].level; */
+
+    /*This sets health equal to health minus the return value
+     of the getMonsterAttackValue function, and passes the 
+     level of the monster as an argument. */
+    health -= getMonsterAttackValue(monsters[fighting].level);
     
+    if(isMonsterHit()){
+        monsterHealth -= weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1;
+
+    } else{
+        text.innerText += " You miss."
+    }
+
     healthText.innerText = health;
     monsterHealthText.innerText = monsterHealth;
     if(health <= 0){
@@ -232,7 +243,34 @@ function attack(){
         fighting === 2 ? winGame() : defeatMonster();
 
     }
+
+    if(Math.random() <= .1 && inventory.length !== 1){
+        text.innerText += " Your " + inventory.pop() + " breaks.";
+        currentWeapon--;
+    }
 }
+
+function getMonsterAttackValue(level){
+
+    /* This will set the monster's attack to five times 
+    their level minus a random number between 0 and the player's xp.*/
+    const hit = (level * 5) - (Math.floor(Math.random() *xp));
+
+    /* log the value of hit to the console to use in debugging. */
+    console.log(hit);
+
+   /*  ternary operator that returns hit if hit is greater than 0,
+     or returns 0 if it is not. */
+    return hit > 0 ? hit : 0;
+}
+
+/* This will return a boolean value (true or false) 
+to be used in your if statement.*/
+function isMonsterHit(){
+    return Math.random() > .2 || health < 20
+}
+
+//
 
 function dodge(){
     text.innerText = "You dodge the attack from the " + monsters[fighting].name;
@@ -270,3 +308,22 @@ function restart(){
     xpText.innerText = xp;
     goTown();
 }
+
+/* (hidden feature) in game */
+function easterEgg(){
+    update(locations[7]);
+}
+
+function pick(guess){
+
+}
+
+function pickTwo(){
+    pick(2)
+}
+
+function pickEight(){
+    pick(8)
+}
+
+//
